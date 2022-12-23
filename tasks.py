@@ -201,46 +201,6 @@ def etl(data_type):
     check(data_type)
 
 
-#-------------- DAG -----------------
-
-default_args = {
-    'owner': 'Швейников Андрей',
-    'email': ['shveynikovab@st.tech'],
-    'retries': 4,
-    'retry_delay': dt.timedelta(minutes=30),
-}
-with DAG(
-        'WebTutor',
-        default_args=default_args,
-        description='Получение данных из WebTutor.',
-        start_date=days_ago(1),
-        schedule_interval='@daily',
-        catchup=True,
-        max_active_runs=1
-) as dag:
-
-    start = DummyOperator(task_id='Начало')
-
-    with TaskGroup('Загрузка_данных_в_stage_слой') as data_to_stage:
-
-        tasks = []
-        data_types = (
-            'subdivision',
-        )
-        for data_type in data_types:
-            tasks.append(
-                PythonOperator(
-                    task_id=f'Получение_данных_{data_type}',
-                    python_callable=etl,
-                    op_kwargs={'data_type': data_type},
-                )
-            )
-        
-        tasks
-    
-    end = DummyOperator(task_id='Конец')
-
-    start >> data_to_stage >> end
 
 if __name__ == '__main__':
     # etl('subdivision')
