@@ -107,5 +107,5 @@ CREATE TABLE sttgaz.stage_webtutor_subdivisions (
 	region_id bigint,
 	kpi_profile_id bigint,
 	bonus_profile_id bigint,
-	is_facult boolean
+	is_faculty boolean
 );
