@@ -193,14 +193,11 @@ def check(data_type):
         raise Exception(
             f'Количество уникальных id в источнике и хранилище не совпадают:{data_in_source} != {data_in_dwh}'
         )
-
-    vertica_conn = 'PG_WORKSHOP'  # идентификатор соединения с БД
  
     v_hook = VerticaHook('vertica') 
     print(v_hook.get_sqlalchemy_engine())
 
 
-df.to_sql(pg_engine …)
 
 
 def etl(data_type):
