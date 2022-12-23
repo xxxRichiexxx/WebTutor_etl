@@ -4,14 +4,6 @@ from urllib.parse import quote
 import numpy as np
 import datetime as dt
 
-from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
-from airflow.utils.task_group import TaskGroup
-from airflow.hooks.base import BaseHook
-from airflow.operators.dummy import DummyOperator
-from airflow.utils.dates import days_ago
-from airflow.contrib.operators.vertica_operator import VerticaOperator
-
 
 source_username = 'PowerBI_integration'
 source_password = quote('CcycPuCP9XeRTiDfkKLV')
@@ -203,4 +195,4 @@ def etl(data_type):
 
 
 if __name__ == '__main__':
-    # etl('subdivision')
+    etl('subdivision')
