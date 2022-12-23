@@ -18,7 +18,7 @@ source_username = source_con.login
 source_password = quote(source_con.password)
 source_host = source_con.host
 source_db = 'datatutor'
-eng_str = fr'mssql://{source_username}:{source_password}@{source_host}/{source_db}?DRIVER={ODBC Driver 13 for SQL Server}'
+eng_str = fr'mssql://{source_username}:{source_password}@{source_host}/{source_db}?driver=ODBC Driver 18 for SQL Server'
 source_engine =sa.create_engine(eng_str)
 
 dwh_con = BaseHook.get_connection('vertica')
