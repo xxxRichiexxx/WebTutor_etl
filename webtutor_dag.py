@@ -11,7 +11,6 @@ from airflow.hooks.base import BaseHook
 from airflow.operators.dummy import DummyOperator
 from airflow.utils.dates import days_ago
 from airflow.contrib.operators.vertica_operator import VerticaOperator
-from airflow.providers.vertica.hooks.vertica import VerticaHook
 
 
 source_con = BaseHook.get_connection('cl02sql\inst02sql')
@@ -193,11 +192,6 @@ def check(data_type):
         raise Exception(
             f'Количество уникальных id в источнике и хранилище не совпадают:{data_in_source} != {data_in_dwh}'
         )
- 
-    v_hook = VerticaHook('vertica') 
-    print(v_hook.get_sqlalchemy_engine())
-
-
 
 
 def etl(data_type):
