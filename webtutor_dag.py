@@ -91,8 +91,7 @@ subdivision = """
 subdivisions = """
                 SELECT *
                 FROM {0}
-                WHERE created > CAST('{1}' AS DATETIME2)
-                    OR modified > CAST('{1}' AS DATETIME2);
+                WHERE modification_date > CAST('{1}' AS DATETIME2);
                 """
 
 def extract(data_type):
@@ -160,10 +159,7 @@ def load(data, data_type):
                 max(data['xml_modification_date']),
             )
         else:
-            max_update_ts = max(
-                max(data['created']),
-                max(data['modified']),
-            )            
+            max_update_ts = max('modification_date')
 
         data.to_sql(
             f'stage_webtutor_{data_type}',
