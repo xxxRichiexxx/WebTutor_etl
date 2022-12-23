@@ -92,7 +92,7 @@ subdivisions = """
                 SELECT *
                 FROM {0}
                 WHERE created > CAST('{1}' AS DATETIME2)
-                    OR modified CAST('{1}' AS DATETIME2);
+                    OR modified > CAST('{1}' AS DATETIME2);
                 """
 
 def extract(data_type):
