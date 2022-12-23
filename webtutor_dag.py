@@ -63,18 +63,18 @@ subdivision = """
                             ,data.value('(/subdivision/custom_elems/custom_elem[name="f_so4s"]/value)[1]', 'varchar(500)')          AS f_so4s
                             ,data.value('(/subdivision/custom_elems/custom_elem[name="f_postpril1"]/value)[1]', 'varchar(500)')     AS f_postpril1
                             ,data.value('(/subdivision/custom_elems/custom_elem[name="f_dilerskidki"]/value)[1]', 'varchar(500)')   AS f_dilerskidki
-	                FROM    subdivision
-	                WHERE data.value('(/subdivision/doc_info/creation/date)[1]', 'datetime')  > CAST('{0}' AS DATETIME2)
-	                        OR data.value('(/subdivision/doc_info/modification/date)[1]', 'datetime')  > CAST('{0}' AS DATETIME2)
+	                FROM    {0}
+	                WHERE data.value('(/subdivision/doc_info/creation/date)[1]', 'datetime')  > CAST('{1}' AS DATETIME2)
+	                        OR data.value('(/subdivision/doc_info/modification/date)[1]', 'datetime')  > CAST('{1}' AS DATETIME2)
                 ),
                 sq2 AS(
                 	SELECT  id
                             ,Table1.field.query('name').value('.', 'varchar(500)') 													AS plan_name
                             ,Table1.field.value('(./value)[1]', 'varchar(500)') 													AS plan_value
-	                FROM    subdivision
+	                FROM    {0}
 	                        CROSS APPLY subdivision.data.nodes('(/subdivision/custom_elems/custom_elem)') AS Table1(field)
-	                WHERE data.value('(/subdivision/doc_info/creation/date)[1]', 'datetime')  > CAST('{0}' AS DATETIME2)
-	                        OR data.value('(/subdivision/doc_info/modification/date)[1]', 'datetime')  > CAST('{0}' AS DATETIME2)
+	                WHERE data.value('(/subdivision/doc_info/creation/date)[1]', 'datetime')  > CAST('{1}' AS DATETIME2)
+	                        OR data.value('(/subdivision/doc_info/modification/date)[1]', 'datetime')  > CAST('{1}' AS DATETIME2)
                 ),
                 sq3 AS(
                 	SELECT *
@@ -88,6 +88,12 @@ subdivision = """
 
                 """
 
+subdivisions = """
+                SELECT *
+                FROM {0}
+                WHERE created > CAST('{1}' AS DATETIME2)
+                    OR modified CAST('{1}' AS DATETIME2);
+                """
 
 def extract(data_type):
 
@@ -107,7 +113,7 @@ def extract(data_type):
 
     print('Запрос данных из БД Webtutor c датой изменения от:', ts_from)
 
-    command = globals()[data_type].format(ts_from)
+    command = globals()[data_type].format(data_type, ts_from)
 
     return pd.read_sql_query(
         command,
@@ -148,10 +154,16 @@ def load(data, data_type):
             dwh_engine,
         )
 
-        max_update_ts = max(
-            max(data['xml_creation_date']),
-            max(data['xml_modification_date']),
-        )
+        if data_type == 'subdivision':
+            max_update_ts = max(
+                max(data['xml_creation_date']),
+                max(data['xml_modification_date']),
+            )
+        else:
+            max_update_ts = max(
+                max(data['created']),
+                max(data['modified']),
+            )            
 
         data.to_sql(
             f'stage_webtutor_{data_type}',
@@ -227,6 +239,7 @@ with DAG(
         tasks = []
         data_types = (
             'subdivision',
+            'subdivisions',
         )
         for data_type in data_types:
             tasks.append(

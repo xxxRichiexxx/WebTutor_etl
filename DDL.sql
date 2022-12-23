@@ -50,7 +50,6 @@ CREATE TABLE stage_webtutor_collaborators (
 );
 
 DROP TABLE IF EXISTS sttgaz.stage_webtutor_subdivision;
-
 CREATE TABLE sttgaz.stage_webtutor_subdivision(
     id BIGINT, 
 	created DATETIME,
@@ -87,4 +86,26 @@ CREATE TABLE sttgaz.stage_webtutor_subdivision(
     f_dilerskidki VARCHAR(500),
     plan_name VARCHAR(500),
     plan_value VARCHAR(500)
+);
+
+
+DROP TABLE IF EXISTS sttgaz.stage_webtutor_subdivisions;
+CREATE TABLE sttgaz.stage_webtutor_subdivisions (
+	id bigint NOT NULL,
+	code varchar(900),
+	name varchar(900),
+	org_id bigint,
+	parent_object_id bigint,
+	is_disbanded boolean,
+	knowledge_parts varchar(3000),
+	tags varchar(3000),
+	place_id bigint,
+	cost_center_id bigint,
+	modification_date datetime,
+	app_instance_id varchar(900),
+	experts varchar(3000),
+	region_id bigint,
+	kpi_profile_id bigint,
+	bonus_profile_id bigint,
+	is_facult boolean
 );
