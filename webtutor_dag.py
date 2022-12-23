@@ -11,6 +11,7 @@ from airflow.hooks.base import BaseHook
 from airflow.operators.dummy import DummyOperator
 from airflow.utils.dates import days_ago
 from airflow.contrib.operators.vertica_operator import VerticaOperator
+from airflow.providers.vertica.hooks.vertica import VerticaHook
 
 
 source_con = BaseHook.get_connection('cl02sql\inst02sql')
@@ -19,7 +20,7 @@ source_password = quote(source_con.password)
 source_host = source_con.host
 source_db = 'datatutor'
 eng_str = fr'mssql://{source_username}:{source_password}@{source_host}/{source_db}?driver=ODBC Driver 18 for SQL Server&TrustServerCertificate=yes'
-source_engine =sa.create_engine(eng_str)
+source_engine = sa.create_engine(eng_str)
 
 dwh_con = BaseHook.get_connection('vertica')
 ps = quote(dwh_con.password)
@@ -192,6 +193,15 @@ def check(data_type):
         raise Exception(
             f'Количество уникальных id в источнике и хранилище не совпадают:{data_in_source} != {data_in_dwh}'
         )
+
+    vertica_conn = 'PG_WORKSHOP'  # идентификатор соединения с БД
+ 
+    v_hook = VerticaHook('vertica') 
+    print(v_hook.get_sqlalchemy_engine())
+
+
+df.to_sql(pg_engine …)
+
 
 def etl(data_type):
 
