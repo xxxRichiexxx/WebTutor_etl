@@ -168,7 +168,9 @@ def load(data, data_type):
                 max(data['xml_modification_date']),
             )
         else:
-            max_update_ts = max('modification_date')
+            print('TEST')
+            max_update_ts = max(data['modification_date'])
+            print(max_update_ts)
 
         data.to_sql(
             f'stage_webtutor_{data_type}',
