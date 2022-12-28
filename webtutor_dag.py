@@ -151,6 +151,13 @@ def transform(data, data_type):
         data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
         data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
         data = data.drop(columns=['tag_id', 'role_id'])
+    elif not data.empty and data_type == 'regions':
+        data = data.drop(columns=['parent_object_id', 'app_instance_id'])
+    elif not data.empty and data_type == 'places':
+        data['user_group_id'] = data['user_group_id'].fillna(0).astype(np.int64)
+        data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
+        data['timezone_id'] = data['timezone_id'].fillna(0).astype(np.int64)
+        data = data.drop(columns=['parent_id', 'app_instance_id'])
     return data
 
 def load(data, data_type):
@@ -261,6 +268,8 @@ with DAG(
             'subdivision',
             'subdivisions',
             'orgs',
+            'regions',
+            'places',
         )
         for data_type in data_types:
             tasks.append(

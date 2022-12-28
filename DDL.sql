@@ -125,3 +125,23 @@ CREATE TABLE sttgaz.stage_webtutor_orgs (
 	region_id bigint,
 	tags varchar(1000)
 );
+
+DROP TABLE IF EXISTS sttgaz.stage_webtutor_regions;
+CREATE TABLE sttgaz.stage_webtutor_regions (
+	id bigint NOT NULL,
+	code varchar(900),
+	name varchar(900),
+	modification_date datetime
+);
+
+DROP TABLE IF EXISTS sttgaz.stage_webtutor_places;
+CREATE TABLE sttgaz.stage_webtutor_places (
+	id bigint NOT NULL,
+	code varchar(1000),
+	name varchar(900),
+	user_access_role varchar(1000),
+	user_group_id bigint,
+	modification_date datetime,
+	region_id bigint,
+	timezone_id bigint
+);
