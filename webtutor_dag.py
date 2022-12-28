@@ -158,6 +158,20 @@ def transform(data, data_type):
         data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
         data['timezone_id'] = data['timezone_id'].fillna(0).astype(np.int64)
         data = data.drop(columns=['parent_id', 'app_instance_id'])
+    elif not data.empty and data_type == 'collaborators':
+        data['position_id'] = data['position_id'].fillna(0).astype(np.int64)
+        data['position_parent_id'] = data['position_parent_id'].fillna(0).astype(np.int64)
+        data['org_id'] = data['org_id'].fillna(0).astype(np.int64)
+        data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
+        data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
+        data['candidate_status_type_id'] = data['candidate_status_type_id'].fillna(0).astype(np.int64)
+        data = data.drop(columns=['login', 'short_login', 'lowercase_login', 'pict_url', 'category_id',
+                                  'web_banned', 'is_arm_admin', 'is_content_admin', 'is_application_admin',
+                                  'candidate_id', 'in_request_black_list', 'allow_personal_chat_request',
+                                  'level_id bigint', 'knowledge_parts', 'tags', 'experts', 'person_object_profile_id',
+                                  'development_potential_id', 'efficiency_estimation_id', 'app_instance_id',
+                                  ])       
+
     return data
 
 def load(data, data_type):
@@ -270,6 +284,7 @@ with DAG(
             'orgs',
             'regions',
             'places',
+            'collaborators',
         )
         for data_type in data_types:
             tasks.append(

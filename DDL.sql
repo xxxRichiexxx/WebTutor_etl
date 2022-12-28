@@ -145,3 +145,33 @@ CREATE TABLE sttgaz.stage_webtutor_places (
 	region_id bigint,
 	timezone_id bigint
 );
+
+DROP TABLE IF EXISTS sttgaz.stage_webtutor_collaborators;
+CREATE TABLE sttgaz.stage_webtutor_collaborators (
+	id bigint NOT NULL,
+	code varchar(900),
+	fullname varchar(900),
+	email varchar(900),
+	phone varchar(1000),
+	mobile_phone varchar(1000),
+	birth_date datetime,
+	sex varchar(1000),
+	position_id bigint,
+	position_name varchar(1000),
+	position_parent_id bigint,
+	position_parent_name varchar(900),
+	org_id bigint,
+	org_name varchar(900),
+	place_id bigint,
+	region_id bigint,
+	role_id varchar(1000),
+	is_candidate boolean,
+	candidate_status_type_id bigint,
+	is_outstaff boolean,
+	is_dismiss boolean,
+	position_date datetime,
+	hire_date datetime,
+	dismiss_date datetime,
+	current_state varchar(900),
+	modification_date datetime
+);
