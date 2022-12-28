@@ -168,7 +168,7 @@ def transform(data, data_type):
         data = data.drop(columns=['login', 'short_login', 'lowercase_login', 'pict_url', 'category_id',
                                   'web_banned', 'is_arm_admin', 'is_content_admin', 'is_application_admin',
                                   'candidate_id', 'in_request_black_list', 'allow_personal_chat_request',
-                                  'level_id bigint', 'knowledge_parts', 'tags', 'experts', 'person_object_profile_id',
+                                  'level_id', 'knowledge_parts', 'tags', 'experts', 'person_object_profile_id',
                                   'development_potential_id', 'efficiency_estimation_id', 'app_instance_id',
                                   ])       
 
