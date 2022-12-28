@@ -88,13 +88,14 @@ subdivision = """
 
                 """
 
-subdivisions = """
+common_query = """
                 SELECT *
                 FROM {0}
                 WHERE modification_date > CAST('{1}' AS DATETIME2);
                 """
 
 def extract(data_type):
+    """Извлечение данных из источника."""
 
     df = pd.read_sql_query(
         f"""
@@ -112,7 +113,9 @@ def extract(data_type):
 
     print('Запрос данных из БД Webtutor c датой изменения от:', ts_from)
 
-    command = globals()[data_type].format(data_type, ts_from)
+    command = globals()['common_query'] if data_type != 'subdivision' else globals()[data_type]
+    
+    command = command.format(data_type, ts_from)
 
     return pd.read_sql_query(
         command,
@@ -120,6 +123,7 @@ def extract(data_type):
     )
 
 def transform(data, data_type):
+    """Преобразование/трансформация данных."""
 
     if not data.empty and data_type == 'subdivision':
         data['xml_id'] = data['xml_id'].fillna(0).astype(np.int64)
@@ -139,9 +143,18 @@ def transform(data, data_type):
         data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
         data['kpi_profile_id'] = data['kpi_profile_id'].fillna(0).astype(np.int64)
         data['bonus_profile_id'] = data['bonus_profile_id'].fillna(0).astype(np.int64)
+    elif not data.empty and data_type == 'orgs':
+        data['account_id'] = data['account_id'].fillna(0).astype(np.int64)
+        data['app_instance_id'] = data['app_instance_id'].fillna(0).astype(np.int64)
+        data['kpi_profile_id'] = data['kpi_profile_id'].fillna(0).astype(np.int64)
+        data['bonus_profile_id'] = data['bonus_profile_id'].fillna(0).astype(np.int64)
+        data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
+        data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
+        data = data.drop(columns=['tag_id', 'role_id'])
     return data
 
 def load(data, data_type):
+    """Загрузка данных в хранилище."""
 
     if not data.empty:
 
@@ -191,6 +204,7 @@ def load(data, data_type):
         print('Нет новых данных для загрузки.')
 
 def check(data_type):
+    """Проверяем успешность загрузки."""
 
     data_in_source = pd.read_sql_query(
         f"""
@@ -205,6 +219,7 @@ def check(data_type):
         """,
         dwh_engine,
     ).values[0][0]
+    
     if data_in_source != data_in_dwh:
         raise Exception(
             f'Количество уникальных id в источнике и хранилище не совпадают:{data_in_source} != {data_in_dwh}'
@@ -212,7 +227,7 @@ def check(data_type):
 
 
 def etl(data_type):
-
+    """Запускаем ETL-процесс для заданного типа данных."""
     data = extract(data_type)
     data = transform(data, data_type)
     load(data, data_type)
@@ -245,6 +260,7 @@ with DAG(
         data_types = (
             'subdivision',
             'subdivisions',
+            'orgs',
         )
         for data_type in data_types:
             tasks.append(
