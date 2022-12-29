@@ -154,62 +154,62 @@ def extract(data_type):
     #     dtype = dtypes[data_type],
     # )
 
-    print(pd.read_sql_query(
+    return pd.read_sql_query(
         command,
         source_engine,
         dtype = dtypes[data_type],
         coerce_float=False,
-    )['org_id'])
+    )
 
 def transform(data, data_type):
     """Преобразование/трансформация данных."""
 
-    # if not data.empty and data_type == 'subdivision':
-    #     data['xml_id'] = data['xml_id'].fillna(0).astype(np.int64)
-    #     data['org_id'] = data['org_id'].fillna(0).astype(np.int64)
-    #     data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
-    #     data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
-    #     data['creator_id'] = data['creator_id'].fillna(0).astype(np.int64)
-    #     data['modificator_id'] = data['modificator_id'].fillna(0).astype(np.int64)
-    #     data['id_stoyanki'] = data['id_stoyanki'].fillna(0).astype(np.int64)
-    #     data['id_plowadki'] = data['id_plowadki'].fillna(0).astype(np.int64)
-    # elif not data.empty and data_type == 'subdivisions':
-    #     data['org_id'] = data['org_id'].fillna(0).astype(np.int64)
-    #     data['parent_object_id'] = data['parent_object_id'].fillna(0).astype(np.int64)
-    #     data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
-    #     data['cost_center_id'] = data['cost_center_id'].fillna(0).astype(np.int64)
-    #     data['app_instance_id'] = data['app_instance_id'].fillna(0).astype(np.int64)
-    #     data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
-    #     data['kpi_profile_id'] = data['kpi_profile_id'].fillna(0).astype(np.int64)
-    #     data['bonus_profile_id'] = data['bonus_profile_id'].fillna(0).astype(np.int64)
-    # elif not data.empty and data_type == 'orgs':
-    #     data['account_id'] = data['account_id'].fillna(0).astype(np.int64)
-    #     data['app_instance_id'] = data['app_instance_id'].fillna(0).astype(np.int64)
-    #     data['kpi_profile_id'] = data['kpi_profile_id'].fillna(0).astype(np.int64)
-    #     data['bonus_profile_id'] = data['bonus_profile_id'].fillna(0).astype(np.int64)
-    #     data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
-    #     data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
-    #     data = data.drop(columns=['tag_id', 'role_id'])
-    # elif not data.empty and data_type == 'regions':
-    #     data = data.drop(columns=['parent_object_id', 'app_instance_id'])
-    # elif not data.empty and data_type == 'places':
-    #     data['user_group_id'] = data['user_group_id'].fillna(0).astype(np.int64)
-    #     data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
-    #     data['timezone_id'] = data['timezone_id'].fillna(0).astype(np.int64)
-    #     data = data.drop(columns=['parent_id', 'app_instance_id'])
-    # elif not data.empty and data_type == 'collaborators':
-    #     data['position_id'] = data['position_id'].fillna(0).astype(np.int64)
-    #     data['position_parent_id'] = data['position_parent_id'].fillna(0).astype(np.int64)
-    #     data['org_id'] = data['org_id'].fillna(0).astype(np.int64)
-    #     data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
-    #     data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
-    #     data['candidate_status_type_id'] = data['candidate_status_type_id'].fillna(0).astype(np.int64)
-    #     data = data.drop(columns=['login', 'short_login', 'lowercase_login', 'pict_url', 'category_id',
-    #                               'web_banned', 'is_arm_admin', 'is_content_admin', 'is_application_admin',
-    #                               'candidate_id', 'in_request_black_list', 'allow_personal_chat_request',
-    #                               'level_id', 'knowledge_parts', 'tags', 'experts', 'person_object_profile_id',
-    #                               'development_potential_id', 'efficiency_estimation_id', 'app_instance_id',
-    #                               ])       
+    if not data.empty and data_type == 'subdivision':
+        data['xml_id'] = data['xml_id'].fillna(0).astype(np.int64)
+        data['org_id'] = data['org_id'].fillna(0).astype(np.int64)
+        data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
+        data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
+        data['creator_id'] = data['creator_id'].fillna(0).astype(np.int64)
+        data['modificator_id'] = data['modificator_id'].fillna(0).astype(np.int64)
+        data['id_stoyanki'] = data['id_stoyanki'].fillna(0).astype(np.int64)
+        data['id_plowadki'] = data['id_plowadki'].fillna(0).astype(np.int64)
+    elif not data.empty and data_type == 'subdivisions':
+        data['org_id'] = data['org_id'].fillna(0).astype(np.int64)
+        data['parent_object_id'] = data['parent_object_id'].fillna(0).astype(np.int64)
+        data['place_id'] = data['place_id'].fillna(0).astype(np.Int64)
+        data['cost_center_id'] = data['cost_center_id'].fillna(0).astype(np.int64)
+        data['app_instance_id'] = data['app_instance_id'].fillna(0).astype(np.int64)
+        data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
+        data['kpi_profile_id'] = data['kpi_profile_id'].fillna(0).astype(np.int64)
+        data['bonus_profile_id'] = data['bonus_profile_id'].fillna(0).astype(np.int64)
+    elif not data.empty and data_type == 'orgs':
+        data['account_id'] = data['account_id'].fillna(0).astype(np.int64)
+        data['app_instance_id'] = data['app_instance_id'].fillna(0).astype(np.int64)
+        data['kpi_profile_id'] = data['kpi_profile_id'].fillna(0).astype(np.int64)
+        data['bonus_profile_id'] = data['bonus_profile_id'].fillna(0).astype(np.int64)
+        data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
+        data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
+        data = data.drop(columns=['tag_id', 'role_id'])
+    elif not data.empty and data_type == 'regions':
+        data = data.drop(columns=['parent_object_id', 'app_instance_id'])
+    elif not data.empty and data_type == 'places':
+        data['user_group_id'] = data['user_group_id'].fillna(0).astype(np.int64)
+        data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
+        data['timezone_id'] = data['timezone_id'].fillna(0).astype(np.int64)
+        data = data.drop(columns=['parent_id', 'app_instance_id'])
+    elif not data.empty and data_type == 'collaborators':
+        data['position_id'] = data['position_id'].fillna(0).astype(np.int64)
+        data['position_parent_id'] = data['position_parent_id'].fillna(0).astype(np.int64)
+        data['org_id'] = data['org_id'].fillna(0).astype(np.int64)
+        data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
+        data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
+        data['candidate_status_type_id'] = data['candidate_status_type_id'].fillna(0).astype(np.int64)
+        data = data.drop(columns=['login', 'short_login', 'lowercase_login', 'pict_url', 'category_id',
+                                  'web_banned', 'is_arm_admin', 'is_content_admin', 'is_application_admin',
+                                  'candidate_id', 'in_request_black_list', 'allow_personal_chat_request',
+                                  'level_id', 'knowledge_parts', 'tags', 'experts', 'person_object_profile_id',
+                                  'development_potential_id', 'efficiency_estimation_id', 'app_instance_id',
+                                  ])       
 
     return data
 
