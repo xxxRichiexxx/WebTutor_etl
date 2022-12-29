@@ -158,6 +158,7 @@ def extract(data_type):
         command,
         source_engine,
         dtype = dtypes[data_type],
+        coerce_float=False,
     )['org_id'])
 
 def transform(data, data_type):
