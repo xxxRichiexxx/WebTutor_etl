@@ -289,9 +289,9 @@ def check(data_type):
 def etl(data_type):
     """Запускаем ETL-процесс для заданного типа данных."""
     data = extract(data_type)
-    # data = transform(data, data_type)
-    # load(data, data_type)
-    # check(data_type)
+    data = transform(data, data_type)
+    load(data, data_type)
+    check(data_type)
 
 
 #-------------- DAG -----------------
