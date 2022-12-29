@@ -145,30 +145,30 @@ def extract(data_type):
     return pd.read_sql_query(
         command,
         source_engine,
-        dtype = 'object',
+        dtype = dtypes[data_type],
     )
 
 def transform(data, data_type):
     """Преобразование/трансформация данных."""
 
-    # if not data.empty and data_type == 'subdivision':
-    #     data['xml_id'] = data['xml_id'].fillna(0).astype(np.int64)
-    #     data['org_id'] = data['org_id'].fillna(0).astype(np.int64)
-    #     data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
-    #     data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
-    #     data['creator_id'] = data['creator_id'].fillna(0).astype(np.int64)
-    #     data['modificator_id'] = data['modificator_id'].fillna(0).astype(np.int64)
-    #     data['id_stoyanki'] = data['id_stoyanki'].fillna(0).astype(np.int64)
-    #     data['id_plowadki'] = data['id_plowadki'].fillna(0).astype(np.int64)
-    # elif not data.empty and data_type == 'subdivisions':
-    #     data['org_id'] = data['org_id'].fillna(0).apply(Decimal)
-    #     data['parent_object_id'] = data['parent_object_id'].fillna(0).astype(np.int64)
-    #     data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
-    #     data['cost_center_id'] = data['cost_center_id'].fillna(0).astype(np.int64)
-    #     data['app_instance_id'] = data['app_instance_id'].fillna(0).astype(np.int64)
-    #     data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
-    #     data['kpi_profile_id'] = data['kpi_profile_id'].fillna(0).astype(np.int64)
-    #     data['bonus_profile_id'] = data['bonus_profile_id'].fillna(0).astype(np.int64)
+    if not data.empty and data_type == 'subdivision':
+        data['xml_id'] = data['xml_id'].fillna(0).astype(np.int64)
+        data['org_id'] = data['org_id'].fillna(0).astype(np.int64)
+        data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
+        data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
+        data['creator_id'] = data['creator_id'].fillna(0).astype(np.int64)
+        data['modificator_id'] = data['modificator_id'].fillna(0).astype(np.int64)
+        data['id_stoyanki'] = data['id_stoyanki'].fillna(0).astype(np.int64)
+        data['id_plowadki'] = data['id_plowadki'].fillna(0).astype(np.int64)
+    elif not data.empty and data_type == 'subdivisions':
+        data['org_id'] = data['org_id'].fillna(0).astype(np.int64)
+        data['parent_object_id'] = data['parent_object_id'].fillna(0).astype(np.int64)
+        data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
+        data['cost_center_id'] = data['cost_center_id'].fillna(0).astype(np.int64)
+        data['app_instance_id'] = data['app_instance_id'].fillna(0).astype(np.int64)
+        data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
+        data['kpi_profile_id'] = data['kpi_profile_id'].fillna(0).astype(np.int64)
+        data['bonus_profile_id'] = data['bonus_profile_id'].fillna(0).astype(np.int64)
     # elif not data.empty and data_type == 'orgs':
     #     data['account_id'] = data['account_id'].fillna(0).astype(np.int64)
     #     data['app_instance_id'] = data['app_instance_id'].fillna(0).astype(np.int64)
