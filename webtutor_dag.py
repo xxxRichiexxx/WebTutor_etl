@@ -145,7 +145,7 @@ def extract(data_type):
     return pd.read_sql_query(
         command,
         source_engine,
-        dtype = dtypes[data_type],
+        dtype = 'object',
     )
 
 def transform(data, data_type):
