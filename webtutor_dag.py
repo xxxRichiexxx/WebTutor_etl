@@ -35,19 +35,19 @@ subdivision = """
                     SELECT 	id
                             ,created
                             ,modified
-                            ,data.value('(/subdivision/id)[1]', 'bigint')                                                           AS xml_id
+                            ,COALESCE(data.value('(/subdivision/id)[1]', 'bigint'), 0)                                              AS xml_id
                             ,data.value('(/subdivision/code)[1]', 'varchar(100)')                                                   AS code
                             ,data.value('(/subdivision/name)[1]', 'varchar(500)')                                                   AS name
-                            ,data.value('(/subdivision/org_id)[1]', 'bigint')                                                       AS org_id
+                            ,COALESCE(data.value('(/subdivision/org_id)[1]', 'bigint'), 0)                                          AS org_id
                             ,data.value('(/subdivision/is_disbanded)[1]', 'bit')                                                    AS is_disbanded
-                            ,data.value('(/subdivision/place_id)[1]', 'bigint')                                                     AS place_id
-                            ,data.value('(/subdivision/region_id)[1]', 'bigint')                                                    AS region_id
+                            ,COALESCE(data.value('(/subdivision/place_id)[1]', 'bigint'), 0)                                        AS place_id
+                            ,COALESCE(data.value('(/subdivision/region_id)[1]', 'bigint'), 0)                                       AS region_id
                             ,data.value('(/subdivision/formed_date)[1]', 'datetime')                                                AS formed_date
                             ,data.value('(/subdivision/is_faculty)[1]', 'bit')                                                      AS is_faculty
                             ,data.value('(/subdivision/comment)[1]', 'varchar(1000)')                                               AS comment
-                            ,data.value('(/subdivision/doc_info/creation/user_id)[1]','bigint')                                     AS creator_id
+                            ,COALESCE(data.value('(/subdivision/doc_info/creation/user_id)[1]','bigint'), 0)                        AS creator_id
                             ,data.value('(/subdivision/doc_info/creation/date)[1]', 'datetime')                                     AS xml_creation_date
-                            ,data.value('(/subdivision/doc_info/modification/user_id)[1]','bigint')                                 AS modificator_id
+                            ,COALESCE(data.value('(/subdivision/doc_info/modification/user_id)[1]','bigint'), 0)                    AS modificator_id
                             ,data.value('(/subdivision/doc_info/modification/date)[1]', 'datetime')                                 AS xml_modification_date
                             ,data.value('(/subdivision/custom_elems/custom_elem[name="type_dc"]/value)[1]', 'varchar(100)')         AS type_dc
                             ,data.value('(/subdivision/custom_elems/custom_elem[name="site_diler"]/value)[1]', 'varchar(500)')      AS site_diler
