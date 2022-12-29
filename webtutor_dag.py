@@ -106,14 +106,14 @@ dtypes = {
         'id_plowadki': 'Int64',
     },
     'subdivisions': {
-        'org_id': 'Int64',
-        'parent_object_id': 'Int64',
-        'place_id': 'Int64',
-        'cost_center_id': 'Int64',
-        'app_instance_id': 'Int64',
-        'region_id': 'Int64',
-        'kpi_profile_id': 'Int64',
-        'bonus_profile_id': 'Int64',
+        'org_id': 'object',
+        'parent_object_id': 'object',
+        'place_id': 'object',
+        'cost_center_id': 'object',
+        'app_instance_id': 'object',
+        'region_id': 'object',
+        'kpi_profile_id': 'object',
+        'bonus_profile_id': 'object',
     },
 }
 
