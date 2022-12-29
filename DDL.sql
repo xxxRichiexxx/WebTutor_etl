@@ -97,16 +97,10 @@ CREATE TABLE sttgaz.stage_webtutor_subdivisions (
 	org_id bigint,
 	parent_object_id bigint,
 	is_disbanded boolean,
-	knowledge_parts varchar(3000),
-	tags varchar(3000),
 	place_id bigint,
 	cost_center_id bigint,
 	modification_date datetime,
-	app_instance_id varchar(900),
-	experts varchar(3000),
 	region_id bigint,
-	kpi_profile_id bigint,
-	bonus_profile_id bigint,
 	is_faculty boolean
 );
 
