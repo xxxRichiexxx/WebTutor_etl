@@ -4,6 +4,7 @@ from urllib.parse import quote
 import numpy as np
 import datetime as dt
 from decimal import Decimal
+from sqlalchemy import text
 
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
@@ -141,12 +142,17 @@ def extract(data_type):
     
     command = command.format(data_type, ts_from)
     print(command)
+    
+    with source_engine.connect() as connection:
+        result = connection.execute(text(command))
+        for row in result[:10]:
+            print(row)
 
-    return pd.read_sql_query(
-        command,
-        source_engine,
-        dtype = dtypes[data_type],
-    )
+    # return pd.read_sql_query(
+    #     command,
+    #     source_engine,
+    #     dtype = dtypes[data_type],
+    # )
 
 def transform(data, data_type):
     """Преобразование/трансформация данных."""
@@ -276,9 +282,9 @@ def check(data_type):
 def etl(data_type):
     """Запускаем ETL-процесс для заданного типа данных."""
     data = extract(data_type)
-    data = transform(data, data_type)
-    load(data, data_type)
-    check(data_type)
+    # data = transform(data, data_type)
+    # load(data, data_type)
+    # check(data_type)
 
 
 #-------------- DAG -----------------
