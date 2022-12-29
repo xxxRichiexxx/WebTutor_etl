@@ -117,7 +117,8 @@ def extract(data_type):
     command = globals()['common_query'] if data_type != 'subdivision' else globals()[data_type]
     
     command = command.format(data_type, ts_from)
-
+    print(command)
+    
     return pd.read_sql_query(
         command,
         source_engine
