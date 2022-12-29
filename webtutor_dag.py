@@ -90,12 +90,6 @@ subdivision = """
 
                 """
 
-common_query = """
-                SELECT *
-                FROM {0}
-                WHERE modification_date > CAST('{1}' AS DATETIME2);
-                """
-
 subdivisions =  """
                 SELECT id, code, name,
                 COALESCE(org_id, 0) AS org_id,
@@ -109,28 +103,14 @@ subdivisions =  """
                 FROM {0}
                 WHERE modification_date > CAST('{1}' AS DATETIME2);
                 """
-dtypes = {
-    'subdivision': {
-        'xml_id': 'Int64',
-        'org_id': 'Int64',
-        'place_id': 'Int64',
-        'region_id': 'Int64',
-        'creator_id': 'Int64',
-        'modificator_id': 'Int64',
-        'id_stoyanki': 'Int64',
-        'id_plowadki': 'Int64',
-    },
-    'subdivisions': {
-        'org_id': 'object',
-        'parent_object_id': 'object',
-        'place_id': 'object',
-        'cost_center_id': 'object',
-        'app_instance_id': 'object',
-        'region_id': 'object',
-        'kpi_profile_id': 'object',
-        'bonus_profile_id': 'object',
-    },
-}
+
+orgs =  """
+        SELECT id, code, name, disp_name, modification_date,
+        COALESCE(place_id, 0) AS place_id,
+        COALESCE(region_id, 0) AS region_id,
+        FROM {0}
+        WHERE modification_date > CAST('{1}' AS DATETIME2);
+        """
 
 
 def extract(data_type):

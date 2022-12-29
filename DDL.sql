@@ -110,14 +110,9 @@ CREATE TABLE sttgaz.stage_webtutor_orgs (
 	code varchar(1000),
 	name varchar(900),
 	disp_name varchar(900),
-	account_id bigint,
 	modification_date datetime,
-	app_instance_id varchar(1000),
-	kpi_profile_id bigint,
-	bonus_profile_id bigint,
 	place_id bigint,
-	region_id bigint,
-	tags varchar(1000)
+	region_id bigint
 );
 
 DROP TABLE IF EXISTS sttgaz.stage_webtutor_regions;
