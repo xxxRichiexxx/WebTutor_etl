@@ -176,7 +176,7 @@ def transform(data, data_type):
     elif not data.empty and data_type == 'subdivisions':
         data['org_id'] = data['org_id'].fillna(0).astype(np.int64)
         data['parent_object_id'] = data['parent_object_id'].fillna(0).astype(np.int64)
-        data['place_id'] = data['place_id'].fillna(0).astype(np.Int64)
+        data['place_id'] = data['place_id'].fillna(0).astype(np.int64)
         data['cost_center_id'] = data['cost_center_id'].fillna(0).astype(np.int64)
         data['app_instance_id'] = data['app_instance_id'].fillna(0).astype(np.int64)
         data['region_id'] = data['region_id'].fillna(0).astype(np.int64)
