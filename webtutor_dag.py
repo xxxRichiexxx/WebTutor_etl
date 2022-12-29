@@ -145,8 +145,9 @@ def extract(data_type):
     
     with source_engine.connect() as connection:
         result = connection.execute(text(command))
-        for row in result[:10]:
+        for row in result:
             print(row)
+            break
 
     # return pd.read_sql_query(
     #     command,
