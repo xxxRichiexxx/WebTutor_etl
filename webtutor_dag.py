@@ -2,6 +2,7 @@ import pandas as pd
 import sqlalchemy as sa
 from urllib.parse import quote
 import datetime as dt
+import os
 
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
@@ -161,6 +162,7 @@ def extract(data_type):
 
     print('Запрос данных из БД Webtutor c датой изменения от:', ts_from)
 
+    print(os.getcwd())
     with open(fr'/airflow/dags/WebTutor_etl/stage_webtutor_{data_type}.sql', 'r') as f:
         command = f.read().format(data_type, ts_from)
 
