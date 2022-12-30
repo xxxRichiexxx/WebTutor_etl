@@ -162,7 +162,7 @@ def extract(data_type):
 
     print('Запрос данных из БД Webtutor c датой изменения от:', ts_from)
 
-    with open(f'{data_type}.sql') as f:
+    with open(f'{data_type}.sql', 'r') as f:
         command = f.read().format(data_type, ts_from)
 
     print(command)
