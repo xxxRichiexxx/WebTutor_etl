@@ -2,7 +2,6 @@ import pandas as pd
 import sqlalchemy as sa
 from urllib.parse import quote
 import datetime as dt
-from os import open
 
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
