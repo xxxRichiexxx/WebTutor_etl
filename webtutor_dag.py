@@ -161,7 +161,8 @@ def extract(data_type):
         ts_from = '2000-01-01 00:00:00.000'
 
     print('Запрос данных из БД Webtutor c датой изменения от:', ts_from)
-
+    
+    os.chdir('/airflow/dags/WebTutor_etl/')
     print(os.getcwd())
     with open(fr'/airflow/dags/WebTutor_etl/stage_webtutor_{data_type}.sql', 'r') as f:
         command = f.read().format(data_type, ts_from)
