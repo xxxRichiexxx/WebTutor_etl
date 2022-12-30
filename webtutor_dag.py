@@ -164,7 +164,7 @@ def extract(data_type):
     
     os.chdir('/airflow/dags/WebTutor_etl/')
     print(os.getcwd())
-    with open(fr'/airflow/dags/WebTutor_etl/stage_webtutor_{data_type}.sql', 'r') as f:
+    with open(fr'/home/da/airflow/dags/WebTutor_etl/stage_webtutor_{data_type}.sql', 'r') as f:
         command = f.read().format(data_type, ts_from)
 
     print(command)
