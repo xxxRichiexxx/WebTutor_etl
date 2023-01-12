@@ -1,3 +1,4 @@
+CREATE OR REPLACE VIEW dm_webtutor_personal_stat AS
 WITH 
 	------------Динамика количества менеджеров по продажам--------------
 	sq1 AS(

@@ -230,7 +230,17 @@ with DAG(
             )
 
         dds_webtutor_regions >> dds_webtutor_places >> dds_webtutor_orgs >> dds_webtutor_subdivision >> parallel_tasks
+
+    with TaskGroup('Формирование_слоя_dm') as data_to_dm:
+
+        dm_webtutor_personal_stat = VerticaOperator(
+            task_id='update_dm_webtutor_personal_stat',
+            vertica_conn_id='vertica',
+            sql='dm_webtutor_personal_stat.sql',
+        )
+
+        dm_webtutor_personal_stat
     
     end = DummyOperator(task_id='Конец')
 
-    start >> data_to_stage >> data_to_dds >> end
+    start >> data_to_stage >> data_to_dds >> data_to_dm>> end
