@@ -1,3 +1,4 @@
+TRUNCATE TABLE sttgaz.dds_webtutor_regions;
 INSERT INTO sttgaz.dds_webtutor_regions
     (
     "region_id",

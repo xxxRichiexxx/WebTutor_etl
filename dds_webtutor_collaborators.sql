@@ -1,3 +1,4 @@
+TRUNCATE TABLE sttgaz.dds_webtutor_collaborators;
 INSERT INTO sttgaz.dds_webtutor_collaborators
     (
 	collaborator_id,

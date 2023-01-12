@@ -186,7 +186,51 @@ with DAG(
             )
         
         tasks
+
+    with TaskGroup('Формирование_слоя_DDS') as data_to_dds:
+
+        dds_webtutor_regions = VerticaOperator(
+            task_id='update_dds_webtutor_regions',
+            vertica_conn_id='vertica',
+            sql='dds_webtutor_regions.sql',
+        )
+
+        dds_webtutor_places = VerticaOperator(
+            task_id='update_dds_webtutor_places',
+            vertica_conn_id='vertica',
+            sql='dds_webtutor_places.sql',
+        )
+
+        dds_webtutor_orgs = VerticaOperator(
+            task_id='update_dds_webtutor_orgs',
+            vertica_conn_id='vertica',
+            sql='dds_webtutor_orgs.sql',
+        )
+
+        dds_webtutor_subdivision = VerticaOperator(
+            task_id='update_dds_webtutor_subdivision',
+            vertica_conn_id='vertica',
+            sql='dds_webtutor_subdivision.sql',
+        )
+
+        tables = (
+            'dds_webtutor_collaborators',
+            'dds_webtutor_plans',
+        )
+
+        parallel_tasks = []
+
+        for table in tables:
+            parallel_tasks.append(
+                VerticaOperator(
+                    task_id=f'update_{table}',
+                    vertica_conn_id='vertica',
+                    sql=f'{table}.sql',
+                )
+            )
+
+        dds_webtutor_regions >> dds_webtutor_places >> dds_webtutor_orgs >> dds_webtutor_subdivision >> parallel_tasks
     
     end = DummyOperator(task_id='Конец')
 
-    start >> data_to_stage >> end
+    start >> data_to_stage >> data_to_dds >> end

@@ -1,3 +1,4 @@
+TRUNCATE TABLE sttgaz.dds_webtutor_places;
 INSERT INTO sttgaz.dds_webtutor_places
     (
 	"place_id",

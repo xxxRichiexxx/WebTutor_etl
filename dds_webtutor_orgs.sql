@@ -1,3 +1,4 @@
+TRUNCATE TABLE sttgaz.dds_webtutor_orgs;
 INSERT INTO sttgaz.dds_webtutor_orgs
     (
 	org_id,

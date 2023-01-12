@@ -1,4 +1,5 @@
 
+TRUNCATE TABLE sttgaz.dds_webtutor_subdivision;
 INSERT INTO sttgaz.dds_webtutor_subdivision
 	(
 	subdivision_id,
