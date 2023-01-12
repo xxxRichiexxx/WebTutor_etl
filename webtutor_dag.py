@@ -121,10 +121,6 @@ def check(data_type):
                 SELECT COUNT(DISTINCT id) FROM sttgaz.stage_webtutor_{data_type}
                 """
 
-    if data_type == 'collaborators':
-        source_query = source_query + 'WHERE org_id <> 6277855316659687792'
-        dwh_query = dwh_query + 'WHERE org_id <> 6277855316659687792'
-
     data_in_source = pd.read_sql_query(
         source_query,
         source_engine,
