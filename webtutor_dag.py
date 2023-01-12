@@ -114,17 +114,24 @@ def load(data, data_type):
 def check(data_type):
     """Проверяем успешность загрузки."""
 
+    source_query = f"""
+                    SELECT COUNT(DISTINCT id) FROM {data_type};
+                    """
+    dwh_query = f"""
+                SELECT COUNT(DISTINCT id) FROM sttgaz.stage_webtutor_{data_type}
+                """
+
+    if data_type == 'collaborators':
+        source_query = source_query + 'WHERE org_id <> 6277855316659687792'
+        dwh_query = dwh_query + 'WHERE org_id <> 6277855316659687792'
+
     data_in_source = pd.read_sql_query(
-        f"""
-        SELECT COUNT(DISTINCT id) FROM {data_type};
-        """,
+        source_query,
         source_engine,
     ).values[0][0]
 
     data_in_dwh = pd.read_sql_query(
-        f"""
-        SELECT COUNT(DISTINCT id) FROM sttgaz.stage_webtutor_{data_type}
-        """,
+        dwh_query,
         dwh_engine,
     ).values[0][0]
     
