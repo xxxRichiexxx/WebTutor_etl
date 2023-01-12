@@ -244,4 +244,5 @@ LEFT JOIN sq12
 LEFT JOIN sq16
 	ON s.subdivision_id = sq16.subdivision_id AND years."Дата" = sq16."Дата" 
 LEFT JOIN sq20
-	ON s.subdivision_id = sq20.subdivision_id AND years."Дата" = sq20."Дата";
+	ON s.subdivision_id = sq20.subdivision_id AND years."Дата" = sq20."Дата"
+WHERE s.is_disbanded = FALSE;
