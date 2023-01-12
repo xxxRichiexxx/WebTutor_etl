@@ -175,6 +175,8 @@ with DAG(
             'regions',
             'places',
             'collaborators',
+            'positions',
+            'position_commons',
         )
         for data_type in data_types:
             tasks.append(

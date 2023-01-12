@@ -113,6 +113,26 @@ CREATE TABLE sttgaz.stage_webtutor_collaborators (
 	modification_date datetime
 );
 
+DROP TABLE IF EXISTS sttgaz.stage_webtutor_positions;
+CREATE TABLE sttgaz.stage_webtutor_positions (
+	id bigint NOT NULL,
+	code varchar(900),
+	"name" varchar(1000),
+	org_id bigint,
+	parent_object_id bigint,
+	position_common_id bigint,
+	modification_date datetime
+);
+
+DROP TABLE IF EXISTS sttgaz.stage_webtutor_position_commons;
+CREATE TABLE sttgaz.stage_webtutor_position_commons (
+	id bigint NOT NULL,
+	code varchar(900),
+	"name" varchar(1000),
+	position_familys bigint,
+	modification_date datetime
+);
+
 --------------------------------------DDS-----------------------------------------
 
 DROP TABLE IF EXISTS sttgaz.dds_webtutor_regions;
