@@ -115,7 +115,7 @@ def check(data_type):
     """Проверяем успешность загрузки."""
 
     source_query = f"""
-                    SELECT COUNT(DISTINCT id) FROM {data_type};
+                    SELECT COUNT(DISTINCT id) FROM {data_type}
                     """
     dwh_query = f"""
                 SELECT COUNT(DISTINCT id) FROM sttgaz.stage_webtutor_{data_type}
