@@ -17,7 +17,7 @@ SELECT
 	o.modification_date,
 	p.id AS place_id,
 	r.id AS region_id
-FROM sttgaz.stage_webtutor_orgs AS o;
+FROM sttgaz.stage_webtutor_orgs AS o
 LEFT JOIN sttgaz.dds_webtutor_places AS p
 	ON p.place_id = o.place_id
 LEFT JOIN sttgaz.dds_webtutor_regions AS r
