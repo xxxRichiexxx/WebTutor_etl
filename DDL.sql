@@ -277,5 +277,26 @@ UNION
 SELECT 'Менее 50', 9,     1, 0, 0, 1;
 
 
+DROP TABLE IF EXISTS sttgaz.dds_webtutor_position_commons;
+CREATE TABLE sttgaz.dds_webtutor_position_commons (
+	"id" AUTO_INCREMENT PRIMARY KEY,
+	position_common_id bigint NOT NULL,
+	code varchar(900),
+	"name" varchar(1000),
+	position_familys bigint,
+	modification_date datetime
+);
 
+
+DROP TABLE IF EXISTS sttgaz.dds_webtutor_positions;
+CREATE TABLE sttgaz.dds_webtutor_positions (
+	"id" AUTO_INCREMENT PRIMARY KEY,
+	position_id bigint NOT NULL,
+	code varchar(900),
+	"name" varchar(1000),
+	org_id bigint,
+	parent_object_id bigint,
+	position_common_id bigint,
+	modification_date datetime
+);
 
