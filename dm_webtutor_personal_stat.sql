@@ -146,7 +146,7 @@ WITH
 		ON c.position_id = p.id 
 	JOIN sttgaz.dds_webtutor_position_commons 																				AS pc
 		ON p.position_common_id = pc.id
-	WHERE pc.name = 'Начальник отдела продаж'
+	WHERE pc.name = 'РОП'
 	),
 	sq14 AS(
 	SELECT DISTINCT
@@ -158,7 +158,7 @@ WITH
 		ON c.position_id = p.id 
 	JOIN sttgaz.dds_webtutor_position_commons 																				AS pc
 		ON p.position_common_id = pc.id
-	WHERE pc.name = 'Начальник отдела продаж'
+	WHERE pc.name = 'РОП'
 		AND dismiss_date IS NOT NULL
 	),
 	sq15 AS(
