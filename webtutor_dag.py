@@ -191,14 +191,14 @@ with DAG(
 
     with TaskGroup('Формирование_слоя_DDS') as data_to_dds:
 
-        tables = (
+        tables_1 = (
             'dds_webtutor_regions',
             'dds_webtutor_position_commons',
         )
 
         parallel_tasks_1 = []
 
-        for table in tables:
+        for table in tables_1:
             parallel_tasks_1.append(
                 VerticaOperator(
                     task_id=f'update_{table}',
@@ -231,14 +231,14 @@ with DAG(
             sql='dds_webtutor_positions.sql',
         )
 
-        tables = (
+        tables_2 = (
             'dds_webtutor_collaborators',
             'dds_webtutor_plans',
         )
 
         parallel_tasks_2 = []
 
-        for table in tables:
+        for table in tables_2:
             parallel_tasks_2.append(
                 VerticaOperator(
                     task_id=f'update_{table}',
