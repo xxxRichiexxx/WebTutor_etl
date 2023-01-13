@@ -213,7 +213,7 @@ CREATE TABLE sttgaz.dds_webtutor_collaborators (
 	mobile_phone varchar(1000),
 	birth_date datetime,
 	sex varchar(1000),
-	position_name varchar(1000),
+	position_id bigint,
 	position_parent_id bigint,
 	org_id bigint,
 	place_id bigint,

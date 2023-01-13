@@ -225,10 +225,15 @@ with DAG(
             sql='dds_webtutor_subdivision.sql',
         )
 
+        dds_webtutor_positions = VerticaOperator(
+            task_id='update_dds_webtutor_positions',
+            vertica_conn_id='vertica',
+            sql='dds_webtutor_positions.sql',
+        )
+
         tables = (
             'dds_webtutor_collaborators',
             'dds_webtutor_plans',
-            'dds_webtutor_positions',
         )
 
         parallel_tasks_2 = []
@@ -242,7 +247,7 @@ with DAG(
                 )
             )
 
-        parallel_tasks_1 >> dds_webtutor_places >> dds_webtutor_orgs >> dds_webtutor_subdivision >> parallel_tasks_2
+        parallel_tasks_1 >> dds_webtutor_places >> dds_webtutor_orgs >> dds_webtutor_subdivision >> dds_webtutor_positions >> parallel_tasks_2
 
     with TaskGroup('Формирование_слоя_dm') as data_to_dm:
 

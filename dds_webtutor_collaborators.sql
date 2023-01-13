@@ -9,7 +9,7 @@ INSERT INTO sttgaz.dds_webtutor_collaborators
 	mobile_phone,
 	birth_date,
 	sex,
-	position_name,
+	position_id,
 	position_parent_id,
 	org_id,
 	place_id,
@@ -34,7 +34,7 @@ SELECT
 	c.mobile_phone,
 	c.birth_date,
 	c.sex,
-	c.position_name,
+	ps.id,
 	c.position_parent_id,
 	o.id AS org_id,
 	p.id AS place_id,
@@ -55,4 +55,6 @@ LEFT JOIN sttgaz.dds_webtutor_orgs AS o
 LEFT JOIN sttgaz.dds_webtutor_places AS p 
     ON c.place_id = p.place_id 
 LEFT JOIN sttgaz.dds_webtutor_regions AS r 
-    ON c.region_id = r.region_id;
+    ON c.region_id = r.region_id
+LEFT JOIN sttgaz.dds_webtutor_positions AS ps
+    ON c.position_id = ps.position_id;
