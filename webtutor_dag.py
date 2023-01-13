@@ -207,12 +207,6 @@ with DAG(
                 )
             )
 
-        dds_webtutor_regions = VerticaOperator(
-            task_id='update_dds_webtutor_regions',
-            vertica_conn_id='vertica',
-            sql='dds_webtutor_regions.sql',
-        )
-
         dds_webtutor_places = VerticaOperator(
             task_id='update_dds_webtutor_places',
             vertica_conn_id='vertica',
