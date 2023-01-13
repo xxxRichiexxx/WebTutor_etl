@@ -7,7 +7,11 @@ WITH
 		DATE_TRUNC('MONTH', COALESCE(hire_date, dismiss_date))::date														AS "Дата трудоустройства",
 		COUNT(c.id) OVER (PARTITION BY subdivision_id ORDER BY DATE_TRUNC('MONTH', COALESCE(hire_date, dismiss_date))) 		AS "Прирост"
 	FROM sttgaz.dds_webtutor_collaborators 																					AS c
-	WHERE c.position_name iLIKE 'менедж%продаж%авто%'
+	JOIN sttgaz.dds_webtutor_positions 																						AS p
+		ON c.position_id = p.id 
+	JOIN sttgaz.dds_webtutor_position_commons 																				AS pc
+		ON p.position_common_id = pc.id
+	WHERE pc.name = 'Менеджер по продажам автомобилей'
 	),
 	sq2 AS(
 	SELECT DISTINCT
@@ -15,7 +19,11 @@ WITH
 		DATE_TRUNC('MONTH', dismiss_date)::date																				AS "Дата увольнения",
 		COUNT(c.id) OVER (PARTITION BY subdivision_id ORDER BY DATE_TRUNC('MONTH', dismiss_date)) 							AS "Убывание"
 	FROM sttgaz.dds_webtutor_collaborators 																					AS c
-	WHERE c.position_name iLIKE 'менедж%продаж%авто%'
+	JOIN sttgaz.dds_webtutor_positions 																						AS p
+		ON c.position_id = p.id 
+	JOIN sttgaz.dds_webtutor_position_commons 																				AS pc
+		ON p.position_common_id = pc.id
+	WHERE pc.name = 'Менеджер по продажам автомобилей'
 		AND dismiss_date IS NOT NULL
 	),
 	sq3 AS(
@@ -44,7 +52,11 @@ WITH
 		DATE_TRUNC('MONTH', COALESCE(hire_date, dismiss_date))::date														AS "Дата трудоустройства",
 		COUNT(c.id) OVER (PARTITION BY subdivision_id ORDER BY DATE_TRUNC('MONTH', COALESCE(hire_date, dismiss_date))) 		AS "Прирост"
 	FROM sttgaz.dds_webtutor_collaborators 																					AS c
-	WHERE c.position_name iLIKE 'ст%менедж%продаж%'
+	JOIN sttgaz.dds_webtutor_positions 																						AS p
+		ON c.position_id = p.id 
+	JOIN sttgaz.dds_webtutor_position_commons 																				AS pc
+		ON p.position_common_id = pc.id
+	WHERE pc.name = 'Старший менеджер по продажам автомобилей'
 	),
 	sq6 AS(
 	SELECT DISTINCT
@@ -52,7 +64,11 @@ WITH
 		DATE_TRUNC('MONTH', dismiss_date)::date																				AS "Дата увольнения",
 		COUNT(c.id) OVER (PARTITION BY subdivision_id ORDER BY DATE_TRUNC('MONTH', dismiss_date)) 							AS "Убывание"
 	FROM sttgaz.dds_webtutor_collaborators 																					AS c
-	WHERE c.position_name iLIKE 'ст%менедж%продаж%'
+	JOIN sttgaz.dds_webtutor_positions 																						AS p
+		ON c.position_id = p.id 
+	JOIN sttgaz.dds_webtutor_position_commons 																				AS pc
+		ON p.position_common_id = pc.id
+	WHERE pc.name = 'Старший менеджер по продажам автомобилей'
 		AND dismiss_date IS NOT NULL
 	),
 	sq7 AS(
@@ -81,7 +97,11 @@ WITH
 		DATE_TRUNC('MONTH', COALESCE(hire_date, dismiss_date))::date														AS "Дата трудоустройства",
 		COUNT(c.id) OVER (PARTITION BY subdivision_id ORDER BY DATE_TRUNC('MONTH', COALESCE(hire_date, dismiss_date))) 		AS "Прирост"
 	FROM sttgaz.dds_webtutor_collaborators 																					AS c
-	WHERE c.position_name iLIKE '%корпорат%продаж%'
+	JOIN sttgaz.dds_webtutor_positions 																						AS p
+		ON c.position_id = p.id 
+	JOIN sttgaz.dds_webtutor_position_commons 																				AS pc
+		ON p.position_common_id = pc.id
+	WHERE pc.name = 'Менеджер по корпоративным продажам'
 	),
 	sq10 AS(
 	SELECT DISTINCT
@@ -89,7 +109,11 @@ WITH
 		DATE_TRUNC('MONTH', dismiss_date)::date																				AS "Дата увольнения",
 		COUNT(c.id) OVER (PARTITION BY subdivision_id ORDER BY DATE_TRUNC('MONTH', dismiss_date)) 							AS "Убывание"
 	FROM sttgaz.dds_webtutor_collaborators 																					AS c
-	WHERE c.position_name iLIKE '%корпорат%продаж%'
+	JOIN sttgaz.dds_webtutor_positions 																						AS p
+		ON c.position_id = p.id 
+	JOIN sttgaz.dds_webtutor_position_commons 																				AS pc
+		ON p.position_common_id = pc.id
+	WHERE pc.name = 'Менеджер по корпоративным продажам'
 		AND dismiss_date IS NOT NULL
 	),
 	sq11 AS(
@@ -118,7 +142,11 @@ WITH
 		DATE_TRUNC('MONTH', COALESCE(hire_date, dismiss_date))::date														AS "Дата трудоустройства",
 		COUNT(c.id) OVER (PARTITION BY subdivision_id ORDER BY DATE_TRUNC('MONTH', COALESCE(hire_date, dismiss_date))) 		AS "Прирост"
 	FROM sttgaz.dds_webtutor_collaborators 																					AS c
-	WHERE (c.position_name iLIKE 'РОП' OR position_name LIKE '%РОП' OR position_name LIKE 'РОП%' OR  position_name iLIKE '%рук%отдел%продаж%')
+	JOIN sttgaz.dds_webtutor_positions 																						AS p
+		ON c.position_id = p.id 
+	JOIN sttgaz.dds_webtutor_position_commons 																				AS pc
+		ON p.position_common_id = pc.id
+	WHERE pc.name = 'Начальник отдела продаж'
 	),
 	sq14 AS(
 	SELECT DISTINCT
@@ -126,7 +154,11 @@ WITH
 		DATE_TRUNC('MONTH', dismiss_date)::date																				AS "Дата увольнения",
 		COUNT(c.id) OVER (PARTITION BY subdivision_id ORDER BY DATE_TRUNC('MONTH', dismiss_date)) 							AS "Убывание"
 	FROM sttgaz.dds_webtutor_collaborators 																					AS c
-	WHERE (c.position_name iLIKE 'РОП' OR position_name LIKE '%РОП' OR position_name LIKE 'РОП%' OR  position_name iLIKE '%рук%отдел%продаж%')
+	JOIN sttgaz.dds_webtutor_positions 																						AS p
+		ON c.position_id = p.id 
+	JOIN sttgaz.dds_webtutor_position_commons 																				AS pc
+		ON p.position_common_id = pc.id
+	WHERE pc.name = 'Начальник отдела продаж'
 		AND dismiss_date IS NOT NULL
 	),
 	sq15 AS(
@@ -155,7 +187,11 @@ WITH
 		DATE_TRUNC('MONTH', COALESCE(hire_date, dismiss_date))::date														AS "Дата трудоустройства",
 		COUNT(c.id) OVER (PARTITION BY subdivision_id ORDER BY DATE_TRUNC('MONTH', COALESCE(hire_date, dismiss_date))) 		AS "Прирост"
 	FROM sttgaz.dds_webtutor_collaborators 																					AS c
-	WHERE c.position_name iLIKE '%маркетолог%'
+	JOIN sttgaz.dds_webtutor_positions 																						AS p
+		ON c.position_id = p.id 
+	JOIN sttgaz.dds_webtutor_position_commons 																				AS pc
+		ON p.position_common_id = pc.id
+	WHERE pc.name = 'Маркетолог ДЦ'
 	),
 	sq18 AS(
 	SELECT DISTINCT
@@ -163,7 +199,11 @@ WITH
 		DATE_TRUNC('MONTH', dismiss_date)::date																				AS "Дата увольнения",
 		COUNT(c.id) OVER (PARTITION BY subdivision_id ORDER BY DATE_TRUNC('MONTH', dismiss_date)) 							AS "Убывание"
 	FROM sttgaz.dds_webtutor_collaborators 																					AS c
-	WHERE c.position_name iLIKE '%маркетолог%'
+	JOIN sttgaz.dds_webtutor_positions 																						AS p
+		ON c.position_id = p.id 
+	JOIN sttgaz.dds_webtutor_position_commons 																				AS pc
+		ON p.position_common_id = pc.id
+	WHERE pc.name = 'Маркетолог ДЦ'
 		AND dismiss_date IS NOT NULL
 	),
 	sq19 AS(
