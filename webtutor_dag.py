@@ -206,7 +206,7 @@ with DAG(
         load_result_check = BranchPythonOperator(
             task_id='load_result_check',
             python_callable = previous_task_result_check,
-            op_kwargs={'task_name': 'collaborators'}
+            op_kwargs={'task_name': 'collaborators'},
             trigger_rule = 'all_done',
         )
 
