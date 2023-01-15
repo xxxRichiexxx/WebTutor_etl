@@ -271,4 +271,4 @@ with DAG(
     
     end = DummyOperator(task_id='Конец')
 
-    start >> data_to_stage >> data_to_dds >> data_to_dm>> data_check >> end
+    start >> data_to_stage >> data_to_dds >> data_to_dm >> data_check >> end
