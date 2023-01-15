@@ -201,7 +201,7 @@ with DAG(
         )
 
         do_nothing = DummyOperator(task_id='Все_ОК')
-        remove_table = DummyOperator(task_id='Пересоздаем таблицу')
+        remove_table = DummyOperator(task_id='Пересоздаем_таблицу')
         
         load_result_check = BranchPythonOperator(
             task_id='load_result_check',
