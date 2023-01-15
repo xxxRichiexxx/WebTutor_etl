@@ -138,7 +138,6 @@ def check(data_type):
             f'Количество уникальных id в источнике и хранилище не совпадают:{data_in_source} != {data_in_dwh}'
         )
 
-
 def etl(data_type):
     """Запускаем ETL-процесс для заданного типа данных."""
     data = extract(data_type)
@@ -146,6 +145,13 @@ def etl(data_type):
     load(data, data_type)
     check(data_type)
 
+
+
+def previous_task_result_check(task_name, **context):
+    ti = TaskInstance(task_name, context['execution_date'])
+    if ti.current_state() == 'success':
+        return 'do_nothing'
+    return 'remove_table'
 
 #-------------- DAG -----------------
 
@@ -194,14 +200,13 @@ with DAG(
             op_kwargs={'data_type': 'collaborators'},
         )
 
-        collaborators_ti = TaskInstance(collaborators, '{{execution_date}}')
-
         do_nothing = DummyOperator(task_id='Все_ОК')
         remove_table = DummyOperator(task_id='Пересоздаем таблицу')
         
         load_result_check = BranchPythonOperator(
             task_id='load_result_check',
-            python_callable = (lambda status: 'do_nothing' if status == 'success' else 'remove_table')(collaborators_ti.ti.current_state()),
+            python_callable = previous_task_result_check,
+            op_kwargs={'task_name': 'collaborators'}
             trigger_rule = 'all_done',
         )
 
