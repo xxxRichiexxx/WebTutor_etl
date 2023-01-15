@@ -147,11 +147,11 @@ def etl(data_type):
 
 
 
-def previous_task_result_check(task, **context):
+def previous_task_result_check(task, taskgroup, **context):
     ti = TaskInstance(task, context['execution_date'])
     if ti.current_state() == 'success':
-        return 'do_nothing'
-    return 'remove_table'
+        return taskgroup +'.' +'do_nothing'
+    return taskgroup +'.' +'remove_table'
 
 #-------------- DAG -----------------
 
@@ -208,6 +208,7 @@ with DAG(
             python_callable = previous_task_result_check,
             op_kwargs={
                 'task': collaborators,
+                'taskgroup': 'Загрузка_данных_в_stage_слой',
                 },
             trigger_rule = 'all_done',
         )
