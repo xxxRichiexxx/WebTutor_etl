@@ -200,8 +200,8 @@ with DAG(
             op_kwargs={'data_type': 'collaborators'},
         )
 
-        do_nothing = DummyOperator(task_id='Все_ОК')
-        remove_table = DummyOperator(task_id='Пересоздаем_таблицу')
+        do_nothing = DummyOperator(task_id='do_nothing')
+        remove_table = DummyOperator(task_id='remove_table')
         
         load_result_check = BranchPythonOperator(
             task_id='load_result_check',
