@@ -258,7 +258,17 @@ with DAG(
         )
 
         dm_webtutor_personal_stat
+
+    with TaskGroup('Проверка_данных') as data_check:
+
+        check_1 = VerticaOperator(
+            task_id='checking_for_accuracy_of_execution',
+            vertica_conn_id='vertica',
+            sql='checking_for_accuracy_of_execution.sql.sql'
+        )
+
+        check_1
     
     end = DummyOperator(task_id='Конец')
 
-    start >> data_to_stage >> data_to_dds >> data_to_dm>> end
+    start >> data_to_stage >> data_to_dds >> data_to_dm>> data_check >> end
