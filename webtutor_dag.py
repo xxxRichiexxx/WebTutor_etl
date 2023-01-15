@@ -264,7 +264,7 @@ with DAG(
         check_1 = VerticaOperator(
             task_id='checking_for_accuracy_of_execution',
             vertica_conn_id='vertica',
-            sql='checking_for_accuracy_of_execution.sql.sql'
+            sql='checking_for_accuracy_of_execution.sql'
         )
 
         check_1
