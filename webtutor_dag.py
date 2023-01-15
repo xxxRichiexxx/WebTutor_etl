@@ -194,7 +194,7 @@ with DAG(
             op_kwargs={'data_type': 'collaborators'},
         )
 
-        collaborators_ti = TaskInstance(collaborators, {{execution_date}})
+        collaborators_ti = TaskInstance(collaborators, '{{execution_date}}')
 
         do_nothing = DummyOperator(task_id='Все_ОК')
         remove_table = DummyOperator(task_id='Пересоздаем таблицу')
