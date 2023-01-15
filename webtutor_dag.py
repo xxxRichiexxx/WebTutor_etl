@@ -10,6 +10,8 @@ from airflow.hooks.base import BaseHook
 from airflow.operators.dummy import DummyOperator
 from airflow.utils.dates import days_ago
 from airflow.contrib.operators.vertica_operator import VerticaOperator
+from airflow.operators.python import BranchPythonOperator
+from airflow.models import TaskInstance
 
 
 source_con = BaseHook.get_connection('cl02sql\inst02sql')
@@ -174,7 +176,6 @@ with DAG(
             'orgs',
             'regions',
             'places',
-            'collaborators',
             'positions',
             'position_commons',
         )
@@ -186,6 +187,29 @@ with DAG(
                     op_kwargs={'data_type': data_type},
                 )
             )
+
+        collaborators = PythonOperator(
+            task_id=f'Получение_данных_collaborators',
+            python_callable=etl,
+            op_kwargs={'data_type': 'collaborators'},
+        )
+
+        collaborators_ti = TaskInstance(collaborators, {{execution_date}})
+
+        do_nothing = DummyOperator(task_id='Все_ОК')
+        remove_table = DummyOperator(task_id='Пересоздаем таблицу')
+        
+        load_result_check = BranchPythonOperator(
+            task_id='load_result_check',
+            python_callable = (lambda status: 'do_nothing' if status == 'success' else 'remove_table')(collaborators_ti.ti.current_state()),
+            trigger_rule = 'all_done',
+        )
+
+        collapse = DummyOperator(task_id='collapse', trigger_rule = 'none_failed')
+
+        collaborators >> load_result_check >> [do_nothing, remove_table] >> collapse
+
+        tasks.append(collapse)
         
         tasks
 
