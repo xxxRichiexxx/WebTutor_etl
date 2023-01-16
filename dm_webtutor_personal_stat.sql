@@ -198,7 +198,6 @@ WITH
 		LEFT JOIN sq10
 			ON s.subdivision_id = sq10.subdivision_id AND years."Дата" = sq10."Дата"
 		WHERE s.is_disbanded = FALSE
-			AND s.name ='АВТОЦЕНТРГАЗ ОРИОН МОТОРС'
     )
 SELECT
 	org_name,
