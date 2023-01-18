@@ -43,7 +43,10 @@ SELECT
 	c.is_candidate,
 	c.candidate_status_type_id,
 	c.is_outstaff,
-	c.is_dismiss,
+	CASE
+		WHEN is_dismiss = 0 AND c.web_banned = 1 THEN 1
+		ELSE is_dismiss
+	END AS is_dismiss,
 	c.position_date,
 	c.hire_date,
 	c.dismiss_date,
