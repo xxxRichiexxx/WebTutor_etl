@@ -44,12 +44,18 @@ SELECT
 	c.candidate_status_type_id,
 	c.is_outstaff,
 	CASE
-		WHEN is_dismiss = 0 AND c.web_banned = 1 THEN 1
-		ELSE is_dismiss
+		WHEN c.is_dismiss IS False AND c.web_banned IS True THEN True
+		ELSE c.is_dismiss
 	END AS is_dismiss,
 	c.position_date,
-	c.hire_date,
-	c.dismiss_date,
+	CASE
+		WHEN c.hire_date IS NULL AND c.dismiss_date IS NOT NULL THEN c.dismiss_date
+		ELSE c.hire_date
+	END AS hire_date,
+	CASE
+		WHEN c.dismiss_date IS NULL AND c.web_banned IS True THEN c.hire_date
+		ELSE c.dismiss_date
+	END AS dismiss_date,
 	c.current_state,
 	c.modification_date
 FROM sttgaz.stage_webtutor_collaborators AS c
