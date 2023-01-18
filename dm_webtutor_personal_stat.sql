@@ -135,7 +135,7 @@ WITH
 	years AS(
 		SELECT DISTINCT DATE_TRUNC('MONTH', ts)::date AS "Дата"
 		FROM (SELECT '2000-01-01 00:00:00'::TIMESTAMP as tm UNION ALL SELECT NOW()) as t
-		TIMESERIES ts as '1 MONTH' OVER (ORDER BY t.tm)
+		TIMESERIES ts as '1 DAY' OVER (ORDER BY t.tm)
 	),
     dm_prepare AS(
 		SELECT
