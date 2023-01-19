@@ -213,15 +213,27 @@ SELECT
 	plan_value,
 	type_dc,
     "Менеджер по продажам новых автомобилей (МП). План",
-    "МП. Прирост" - COALESCE(LAG("МП. Убывание") OVER (PARTITION BY subdivision_id ORDER BY "Дата"),0)                      AS "МП. Факт",
+    "МП. Прирост" - LAG("МП. Убывание", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата")                     		AS "МП. Факт",
+	LAG("МП. Прирост", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата") -
+		LAG("МП. Убывание", 2, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата")                     					AS "МП. Факт предыдущий месяц",
     "Cтарший менеджер по продажам (СтМОП). План",
-    "стМОП. Прирост" - COALESCE(LAG("стМОП. Убывание") OVER (PARTITION BY subdivision_id ORDER BY "Дата"),0)                AS "СтМОП. Факт",
+    "стМОП. Прирост" - LAG("стМОП. Убывание", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата")                		AS "СтМОП. Факт",
+	LAG("стМОП. Прирост", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата") -
+		LAG("стМОП. Убывание", 2, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата")                     				AS "СтМОП. Факт предыдущий месяц",
     "Эксперт по корпоративным продажам (ЭКорП). План",
-    "ЭКорп. Прирост" - COALESCE(LAG("ЭКорп. Убывание") OVER (PARTITION BY subdivision_id ORDER BY "Дата"),0)                AS "ЭКорП. Факт",
+    "ЭКорп. Прирост" - LAG("ЭКорп. Убывание", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата")              		AS "ЭКорП. Факт",
+	LAG("ЭКорп. Прирост", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата") -
+		LAG("ЭКорп. Убывание", 2, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата")                     				AS "ЭКорп. Факт предыдущий месяц",
     "Руководитель отдела продаж (РОП). План",
-    "РОП. Прирост" - COALESCE(LAG("РОП. Убывание") OVER (PARTITION BY subdivision_id ORDER BY "Дата"),0)                    AS "РОП. Факт",
-    "Марк. Прирост" - COALESCE(LAG("Марк. Убывание") OVER (PARTITION BY subdivision_id ORDER BY "Дата"),0)                  AS "Маркетолог. Факт",
+    "РОП. Прирост" - LAG("РОП. Убывание", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата")                    		AS "РОП. Факт",
+	LAG("РОП. Прирост", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата") -
+		LAG("РОП. Убывание", 2, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата")                     					AS "РОП. Факт предыдущий месяц",
+    "Марк. Прирост" - LAG("Марк. Убывание", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата")                  		AS "Маркетолог. Факт",
+	LAG("Марк. Прирост", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата") -
+		LAG("Марк. Убывание", 2, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата")                     					AS "Марк. Факт предыдущий месяц",
 	"МП. Факт" + "СтМОП. Факт" + "ЭКорП. Факт" + "РОП. Факт" + "Маркетолог. Факт" 											AS "Торг. персонала всего",
+	"МП. Факт предыдущий месяц" + "СтМОП. Факт предыдущий месяц" + "ЭКорп. Факт предыдущий месяц" +
+		"РОП. Факт предыдущий месяц" + "Марк. Факт предыдущий месяц" 														AS "Торг. персонала всего. Предыдущий месяц",
 	CASE
 		WHEN "МП. Факт" + "СтМОП. Факт" - "Менеджер по продажам новых автомобилей (МП). План" > 0 THEN 0
 		ELSE "МП. Факт" + "СтМОП. Факт" - "Менеджер по продажам новых автомобилей (МП). План"
