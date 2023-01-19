@@ -64,10 +64,16 @@ SELECT DISTINCT
 	f_so4s,
 	f_postpril1,
 	f_dilerskidki	
-FROM sttgaz.stage_webtutor_subdivision AS s
-LEFT JOIN sttgaz.dds_webtutor_places AS p
+FROM (SELECT
+		*,
+		CASE
+			WHEN region_id = 6786564021886588363 THEN 6786563732542727845
+			ELSE region_id
+		END AS region_id_for_join		
+	  FROM sttgaz.stage_webtutor_subdivision) AS s
+LEFT JOIN sttgaz.dds_webtutor_places 		  AS p
 	ON p.place_id = s.place_id
-LEFT JOIN sttgaz.dds_webtutor_regions AS r
-	ON r.region_id = s.region_id
-LEFT JOIN sttgaz.dds_webtutor_orgs AS o
+LEFT JOIN sttgaz.dds_webtutor_regions 		  AS r
+	ON r.region_id = s.region_id_for_join
+LEFT JOIN sttgaz.dds_webtutor_orgs 			  AS o
 	ON o.org_id = s.org_id;
