@@ -80,7 +80,8 @@ CREATE TABLE sttgaz.stage_webtutor_places (
 	name varchar(900),
 	modification_date datetime,
 	region_id bigint,
-	timezone_id bigint
+	timezone_id bigint,
+	parent_object_id bigint
 );
 
 DROP TABLE IF EXISTS sttgaz.stage_webtutor_collaborators;
@@ -163,7 +164,8 @@ CREATE TABLE sttgaz.dds_webtutor_places (
 	name varchar(900),
 	modification_date datetime,
 	region_id bigint REFERENCES sttgaz.dds_webtutor_regions(id),
-	timezone_id bigint
+	timezone_id bigint,
+	parent_object_id bigint
 );
 
 

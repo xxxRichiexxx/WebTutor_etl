@@ -6,7 +6,8 @@ INSERT INTO sttgaz.dds_webtutor_places
 	name,
 	modification_date,
 	region_id,
-	timezone_id
+	timezone_id,
+	parent_object_id
     )
 SELECT
 	p.id,
@@ -14,7 +15,8 @@ SELECT
 	p.name,
 	p.modification_date,
 	r.id AS region_id,
-	p.timezone_id
+	p.timezone_id,
+	p.parent_object_id
 FROM sttgaz.stage_webtutor_places AS p
 LEFT JOIN sttgaz.dds_webtutor_regions AS r
 	ON p.region_id = r.region_id;

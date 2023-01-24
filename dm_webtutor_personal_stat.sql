@@ -146,7 +146,9 @@ WITH
 			s.site_diler,
 			r.name 																												AS "Управление",
 			pl.name  																											AS "Город",
-			s.f_4xwo																											AS "Регион",
+			s.f_4xwo																											AS "Регион + направление",
+			pl2.name																											AS "Область",
+			pl3.name																											AS "Регион",
 			years."Дата",
 			p.plan_name,
 			p.plan_value,
@@ -177,6 +179,10 @@ WITH
 			ON s.region_id = r.id
 		LEFT JOIN sttgaz.dds_webtutor_places 	AS pl
 			ON s.place_id = pl.id
+		LEFT JOIN sttgaz.dds_webtutor_places 	AS pl2
+			ON pl.parent_object_id = pl2.place_id
+		LEFT JOIN sttgaz.dds_webtutor_places 	AS pl3
+			ON pl2.parent_object_id = pl3.place_id  
 		LEFT JOIN sq1
 			ON s.subdivision_id = sq1.subdivision_id AND years."Дата" = sq1."Дата" 
 		LEFT JOIN sq2
@@ -207,6 +213,8 @@ SELECT
 	site_diler,
 	"Управление",
 	"Город",
+	"Регион + направление",
+	"Область",
 	"Регион",
 	"Дата",
 	plan_name,
@@ -249,14 +257,14 @@ SELECT
 	"Эксперт по корпоративным продажам (ЭКорП). План" +
 	"Руководитель отдела продаж (РОП). План" 																				AS "Торг. персонала всего. План",
 
-	"МП. Факт" + "СтМОП. Факт" + "ЭКорП. Факт" + "РОП. Факт" + "Маркетолог. Факт" 											AS "Торг. персонала всего. Факт",
+	"МП. Факт" + "СтМОП. Факт" + "ЭКорП. Факт" + "РОП. Факт" 					 											AS "Торг. персонала всего. Факт",
 
 	LAG("Менеджер по продажам новых автомобилей (МП). План", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата") +
 	LAG("Эксперт по корпоративным продажам (ЭКорП). План", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата") +
 	LAG("Руководитель отдела продаж (РОП). План", 1, 0) OVER (PARTITION BY subdivision_id ORDER BY "Дата")					AS "Торг. персонала всего. План. Предыдущий месяц",
 
 	"МП. Факт предыдущий месяц" + "СтМОП. Факт предыдущий месяц" + "ЭКорп. Факт предыдущий месяц" +
-		"РОП. Факт предыдущий месяц" + "Марк. Факт предыдущий месяц" 														AS "Торг. персонала всего. Факт. Предыдущий месяц",
+		"РОП. Факт предыдущий месяц" 								 														AS "Торг. персонала всего. Факт. Предыдущий месяц",
 
 	CASE
 		WHEN "МП. Факт" + "СтМОП. Факт" - "Менеджер по продажам новых автомобилей (МП). План" > 0 THEN 0
