@@ -47,7 +47,7 @@ def extract(data_type):
         ts_from = '2000-01-01 00:00:00.000'
 
     print('Запрос данных из БД Webtutor c датой изменения от:', ts_from)
-    
+
     with open(fr'/home/da/airflow/dags/WebTutor_etl/stage_webtutor_{data_type}.sql', 'r') as f:
         command = f.read().format(data_type, ts_from)
 
@@ -58,10 +58,12 @@ def extract(data_type):
         source_engine,
     )
 
+
 def transform(data, data_type):
     """Преобразование/трансформация данных (ЕСЛИ НУЖНО)."""
 
     return data
+
 
 def load(data, data_type):
     """Загрузка данных в хранилище."""
@@ -69,7 +71,7 @@ def load(data, data_type):
     if not data.empty:
 
         print(data)
-        
+
         ids_for_del = tuple(data['id'].values)
 
         if len(ids_for_del) == 1:
@@ -96,9 +98,9 @@ def load(data, data_type):
         data.to_sql(
             f'stage_webtutor_{data_type}',
             dwh_engine,
-            schema = 'sttgaz',
-            if_exists ='append',
-            index = False,
+            schema='sttgaz',
+            if_exists='append',
+            index=False,
         )
 
         pd.read_sql_query(
@@ -112,6 +114,7 @@ def load(data, data_type):
         )
     else:
         print('Нет новых данных для загрузки.')
+
 
 def check(data_type):
     """Проверяем успешность загрузки."""
@@ -132,11 +135,12 @@ def check(data_type):
         dwh_query,
         dwh_engine,
     ).values[0][0]
-    
+
     if data_in_source != data_in_dwh:
         raise Exception(
             f'Количество уникальных id в источнике и хранилище не совпадают:{data_in_source} != {data_in_dwh}'
         )
+
 
 def etl(data_type):
     """Запускаем ETL-процесс для заданного типа данных."""
@@ -146,12 +150,36 @@ def etl(data_type):
     check(data_type)
 
 
-
 def previous_task_result_check(task, taskgroup, **context):
+    """
+    Проверка результата выполнения предыдущей задачи.
+    На данный момент используется только для проверки результата загрузки collaborators.
+    """
     ti = TaskInstance(task, context['execution_date'])
     if ti.current_state() == 'success':
-        return taskgroup +'.' +'do_nothing'
-    return taskgroup +'.' +'remove_table'
+        return taskgroup + '.' + 'do_nothing'
+    return taskgroup + '.' + 'remove_table'
+
+
+def sync_table(table_name, **context):
+    """
+    Удаление из таблицы в хранилище лишних записей в случае удаления этих записей в источнике.
+    На данный момент используется только для актуализации таблицы collaborators.
+    """
+    ids = pd.read_sql_query(
+        f"""SELECT id FROM {table_name}""",
+        source_engine,
+    )
+
+    ids = ids['id'].values
+    query_part = f'<> {ids[0]}' if len(ids) == 1 else f'NOT IN {tuple(ids)}'
+
+    pd.read_sql_query(
+        f"""DELETE FROM sttgaz.stage_webtutor_{table_name}
+        WHERE id """ + query_part,
+        dwh_engine,
+    )
+
 
 #-------------- DAG -----------------
 
@@ -195,30 +223,37 @@ with DAG(
             )
 
         collaborators = PythonOperator(
-            task_id=f'Получение_данных_collaborators',
+            task_id='Получение_данных_collaborators',
             python_callable=etl,
             op_kwargs={'data_type': 'collaborators'},
         )
 
         do_nothing = DummyOperator(task_id='do_nothing')
-        remove_table = DummyOperator(task_id='remove_table')
-        
+        remove_table = PythonOperator(
+            task_id='remove_table',
+            python_callable=sync_table,
+            op_kwargs={'table_name': 'collaborators'},
+        )
+
         load_result_check = BranchPythonOperator(
             task_id='load_result_check',
-            python_callable = previous_task_result_check,
+            python_callable=previous_task_result_check,
             op_kwargs={
                 'task': collaborators,
                 'taskgroup': 'Загрузка_данных_в_stage_слой',
                 },
-            trigger_rule = 'all_done',
+            trigger_rule='all_done',
         )
 
-        collapse = DummyOperator(task_id='collapse', trigger_rule = 'none_failed')
+        collapse = DummyOperator(
+            task_id='collapse',
+            trigger_rule='none_failed',
+        )
 
         collaborators >> load_result_check >> [do_nothing, remove_table] >> collapse
 
         tasks.append(collapse)
-        
+
         tasks
 
     with TaskGroup('Формирование_слоя_DDS') as data_to_dds:
@@ -300,7 +335,7 @@ with DAG(
         )
 
         check_1
-    
+
     end = DummyOperator(task_id='Конец')
 
     start >> data_to_stage >> data_to_dds >> data_to_dm >> data_check >> end
