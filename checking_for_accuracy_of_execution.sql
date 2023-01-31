@@ -3,7 +3,7 @@ SELECT
 	'dm_webtutor_personal_stat',
 	'checking_for_accuracy_of_execution',
 	NOW(),
-	"Управление" = 'Управление региональных продаж ЦЕНТР'
+	"Управление" = 'ЦЕНТР'
 	AND org_name = 'АвтоГрафф'
 	AND "Регион" = 'Волго-Вятский регион'
 	AND "Город" = 'Киров' 
