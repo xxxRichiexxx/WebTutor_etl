@@ -79,12 +79,11 @@ def load(data, data_type):
         else:
             query_part = f' IN {ids_for_del};'
 
-        pd.read_sql_query(
+        dwh_engine.execute(
             f"""
             DELETE FROM sttgaz.stage_webtutor_{data_type}
             WHERE id
-            """ + query_part,
-            dwh_engine,
+            """ + query_part
         )
 
         if data_type == 'subdivision':
@@ -103,14 +102,13 @@ def load(data, data_type):
             index=False,
         )
 
-        pd.read_sql_query(
+        dwh_engine.execute(
             f"""
             INSERT INTO sttgaz.stage_workflow_status
             (workflow_key,	workflow_settings)
             VALUES
             ('stage_webtutor_{data_type}', '{max_update_ts}');
-            """,
-            dwh_engine,
+            """
         )
     else:
         print('Нет новых данных для загрузки.')
@@ -174,10 +172,9 @@ def sync_table(table_name, **context):
     ids = ids['id'].values
     query_part = f'<> {ids[0]}' if len(ids) == 1 else f'NOT IN {tuple(ids)}'
 
-    pd.read_sql_query(
+    dwh_engine.execute(
         f"""DELETE FROM sttgaz.stage_webtutor_{table_name}
-        WHERE id """ + query_part,
-        dwh_engine,
+        WHERE id """ + query_part
     )
 
 
@@ -186,7 +183,7 @@ def sync_table(table_name, **context):
 default_args = {
     'owner': 'Швейников Андрей',
     'email': ['shveynikovab@st.tech'],
-    'retries': 4,
+    'retries': 3,
     'retry_delay': dt.timedelta(minutes=30),
 }
 with DAG(
