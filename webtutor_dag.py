@@ -148,15 +148,15 @@ def etl(data_type):
     check(data_type)
 
 
-def previous_task_result_check(task, taskgroup, **context):
+def previous_task_result_check(task, taskgroup, data_type, **context):
     """
     Проверка результата выполнения предыдущей задачи.
     На данный момент используется только для проверки результата загрузки collaborators.
     """
     ti = TaskInstance(task, context['execution_date'])
     if ti.current_state() == 'success':
-        return taskgroup + '.' + 'do_nothing'
-    return taskgroup + '.' + 'remove_table'
+        return taskgroup + '.' + f'{data_type}_do_nothing'
+    return taskgroup + '.' + f'{data_type}_remove_table'
 
 
 def sync_table(table_name, **context):
@@ -209,47 +209,42 @@ with DAG(
             'places',
             'positions',
             'position_commons',
+            'collaborators',
         )
         for data_type in data_types:
-            tasks.append(
-                PythonOperator(
-                    task_id=f'Получение_данных_{data_type}',
-                    python_callable=etl,
-                    op_kwargs={'data_type': data_type},
-                )
+
+            load_data = PythonOperator(
+                task_id=f'Получение_данных_{data_type}',
+                python_callable=etl,
+                op_kwargs={'data_type': data_type},
             )
 
-        collaborators = PythonOperator(
-            task_id='Получение_данных_collaborators',
-            python_callable=etl,
-            op_kwargs={'data_type': 'collaborators'},
-        )
+            load_result_check = BranchPythonOperator(
+                task_id=f'load_{data_type}_check',
+                python_callable=previous_task_result_check,
+                op_kwargs={
+                    'task': load_data,
+                    'taskgroup': 'Загрузка_данных_в_stage_слой',
+                    'data_type': data_type,
+                    },
+                trigger_rule='all_done',
+            )
 
-        do_nothing = DummyOperator(task_id='do_nothing')
-        remove_table = PythonOperator(
-            task_id='remove_table',
-            python_callable=sync_table,
-            op_kwargs={'table_name': 'collaborators'},
-        )
+            do_nothing = DummyOperator(task_id=f'{data_type}_do_nothing')
+            remove_table = PythonOperator(
+                task_id=f'{data_type}_remove_table',
+                python_callable=sync_table,
+                op_kwargs={'table_name': data_type},
+            )
 
-        load_result_check = BranchPythonOperator(
-            task_id='load_result_check',
-            python_callable=previous_task_result_check,
-            op_kwargs={
-                'task': collaborators,
-                'taskgroup': 'Загрузка_данных_в_stage_слой',
-                },
-            trigger_rule='all_done',
-        )
+            collapse = DummyOperator(
+                task_id=f'{data_type}_collapse',
+                trigger_rule='none_failed',
+            )
 
-        collapse = DummyOperator(
-            task_id='collapse',
-            trigger_rule='none_failed',
-        )
+            load_data >> load_result_check >> [do_nothing, remove_table] >> collapse
 
-        collaborators >> load_result_check >> [do_nothing, remove_table] >> collapse
-
-        tasks.append(collapse)
+            tasks.append(collapse)
 
         tasks
 
