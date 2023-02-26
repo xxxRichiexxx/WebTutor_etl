@@ -149,6 +149,7 @@ WITH
 			s.f_4xwo																											AS "Регион + направление",
 			pl2.name																											AS "Область",
 			pl3.name																											AS "Регион",
+			COALESCE(pl4.name, 	COALESCE(pl3.name, pl2.name))																	AS "Страна",
 			years."Дата",
 			p.plan_name,
 			p.plan_value,
@@ -182,7 +183,9 @@ WITH
 		LEFT JOIN sttgaz.dds_webtutor_places 	AS pl2
 			ON pl.parent_object_id = pl2.place_id
 		LEFT JOIN sttgaz.dds_webtutor_places 	AS pl3
-			ON pl2.parent_object_id = pl3.place_id  
+			ON pl2.parent_object_id = pl3.place_id
+		LEFT JOIN sttgaz.dds_webtutor_places 	AS pl4
+			ON pl3.parent_object_id = pl4.place_id 
 		LEFT JOIN sq1
 			ON s.subdivision_id = sq1.subdivision_id AND years."Дата" = sq1."Дата" 
 		LEFT JOIN sq2
@@ -220,6 +223,7 @@ WITH
 			"Регион + направление",
 			"Область",
 			"Регион",
+			"Страна",
 			"Дата",
 			plan_name,
 			plan_value,
