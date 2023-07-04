@@ -301,9 +301,9 @@ SELECT '550-699', 4,      4, 1, 1, 1
 UNION
 SELECT '400-549', 5,      4, 1, 1, 1
 UNION
-SELECT '250-399', 6,      3, 1, 0, 1
+SELECT '250-399', 6,      3, 1, 1, 1
 UNION
-SELECT '100-249', 7,      2, 1, 0, 1
+SELECT '100-249', 7,      2, 1, 1, 1
 UNION
 SELECT '50-99', 8,        2, 0, 0, 1
 UNION
