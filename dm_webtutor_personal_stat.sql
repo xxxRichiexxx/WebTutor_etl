@@ -207,6 +207,7 @@ WITH
 		LEFT JOIN sq10
 			ON s.subdivision_id = sq10.subdivision_id AND years."Дата" = sq10."Дата"
 		WHERE s.is_disbanded = FALSE
+			AND s.f_20u4 = 'LCV'
     )
 SELECT
 	org_name,
