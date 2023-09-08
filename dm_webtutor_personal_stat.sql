@@ -142,7 +142,7 @@ WITH
 			o.disp_name 																									    AS org_name,
 			s.id 																												AS subdivision_id,
 			s.name																												AS subdivision_name,
-			COALESCE(s.code, s.f_nliz)																							AS "Код",
+			COALESCE(s.code, s.id_f_nliz_MDAUDIT)																							AS "Код",
 			s.site_diler,
 			r.name 																												AS "Управление",
 			pl.name  																											AS "Город",
