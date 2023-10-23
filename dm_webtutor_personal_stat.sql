@@ -140,7 +140,7 @@ WITH
     dm_prepare AS(
 		SELECT
 			o.disp_name 																									    AS org_name,
-			s.id 																												AS subdivision_id,
+			s.subdivision_id 																									AS subdivision_id,
 			s.name																												AS subdivision_name,
 			COALESCE(s.code, s.id_f_nliz_MDAUDIT)																							AS "Код",
 			s.site_diler,
